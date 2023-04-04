@@ -8,6 +8,7 @@ import torch
 
 from . import general
 
+import sklearn.metrics
 
 def fitness(x):
     # Model fitness as a weighted combination of metrics
@@ -44,13 +45,18 @@ def ap_per_class(tp, conf, pred_cls, target_cls, v5_metric=False, plot=False, sa
         i = pred_cls == c
         n_l = (target_cls == c).sum()  # number of labels
         n_p = i.sum()  # number of predictions
-
+        
         if n_p == 0 or n_l == 0:
             continue
         else:
             # Accumulate FPs and TPs
             fpc = (1 - tp[i]).cumsum(0)
             tpc = tp[i].cumsum(0)
+
+            print(str(n_l + 1e-16))
+
+            # Accuracy
+            accuracy = (tpc+(n_p - (n_l) - fpc))/n_p
 
             # Recall
             recall = tpc / (n_l + 1e-16)  # recall curve
@@ -75,7 +81,7 @@ def ap_per_class(tp, conf, pred_cls, target_cls, v5_metric=False, plot=False, sa
         plot_mc_curve(px, r, Path(save_dir) / 'R_curve.png', names, ylabel='Recall')
 
     i = f1.mean(0).argmax()  # max F1 index
-    return p[:, i], r[:, i], ap, f1[:, i], unique_classes.astype('int32')
+    return p[:, i], r[:, i], ap, f1[:, i], unique_classes.astype('int32'), accuracy
 
 
 def compute_ap(recall, precision, v5_metric=False):

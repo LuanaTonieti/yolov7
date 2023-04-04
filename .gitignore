@@ -1,3 +1,9 @@
+Results_yolov7.txt
+Results_yolov7x.txt
+Results_yolov7_tiny.txt
+yolov7.pt
+yolov7-tiny.pt
+yolov7x.pt
 # Repo-specific GitIgnore ----------------------------------------------------------------------------------------------
 *.jpg
 *.jpeg

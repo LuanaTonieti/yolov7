@@ -1,0 +1,5 @@
+train: /home/robo/Downloads/yoloLabel/train/images
+val: /home/robo/Downloads/yoloLabel/test/images
+
+nc: 2
+names: ['ball', 'robot']
